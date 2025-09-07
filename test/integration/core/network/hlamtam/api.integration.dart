@@ -6,11 +6,10 @@ import 'package:max_killer/core/log.dart';
 import 'package:max_killer/core/network/hlamtam/api.dart';
 import 'package:max_killer/core/network/hlamtam/client.dart';
 import 'package:max_killer/core/network/hlamtam/constants.dart';
-import 'package:max_killer/core/network/hlamtam/exceptions/protocol.dart';
+
+import '../../../../helpers/data_generators.dart';
 
 void main() {
-  const phone = '+79880749532';
-
   group('HlamTamClient (Test server)', () {
     late HlamTamClient client;
     late HlamTamApi api;
@@ -29,15 +28,13 @@ void main() {
 
     test(
       'START_AUTH → real response',
-      timeout: const Timeout(Duration(seconds: 20)),
+      timeout: const Timeout(Duration(seconds: 10)),
       () async {
-        try {
-          final res = await api.auth.startAuth(phone: phone);
+        final result = await api.auth.startAuth(
+          phone: TestDataGenerator.randomPhone(),
+        );
 
-          expect(res.token, isA<String>());
-        } on ProtocolError catch (e) {
-          throw e;
-        }
+        expect(result.token, isA<String>());
       },
     );
   });
