@@ -59,7 +59,10 @@ enum HlamTamCommand {
   request(0),
 
   ///
-  response(1);
+  response(1),
+
+  ///
+  error(3);
 
   const HlamTamCommand(this.code);
 

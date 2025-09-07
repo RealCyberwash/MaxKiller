@@ -2,6 +2,7 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:max_killer/core/log.dart';
 import 'package:max_killer/core/network/hlamtam/api.dart';
 import 'package:max_killer/core/network/hlamtam/client.dart';
 import 'package:max_killer/core/network/hlamtam/constants.dart';
@@ -15,6 +16,8 @@ void main() {
     late HlamTamApi api;
 
     setUpAll(() async {
+      log.setLevel(LogLevel.trace);
+
       client = HlamTamClient();
       await client.connect(HlamTamDomain.tg, HlamTamTcp.port);
       api = HlamTamApi(client: client, version: HlamTamTcp.protocolVersion);
@@ -30,8 +33,6 @@ void main() {
       () async {
         try {
           final res = await api.auth.startAuth(phone: phone);
-
-          print(res);
 
           expect(res.token, isA<String>());
         } on ProtocolError catch (e) {

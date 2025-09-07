@@ -140,6 +140,11 @@ class HlamTamPacket {
     return result;
   }
 
+  @override
+  String toString() {
+    return 'HlamTamPacket(v=$version, seq=$sequence, cmd=$command, opcode=$opcode, data=$data)';
+  }
+
   ///
   static HlamTamTryParseResult? tryParse(Uint8List bytes) {
     if (bytes.length < HlamTamTcp.headerSize) return null;
