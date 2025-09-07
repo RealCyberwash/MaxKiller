@@ -4,9 +4,9 @@ import 'package:max_killer/shared/core/network/hlamtam/response.dart';
 import 'api.dart';
 import 'client.dart';
 import 'constants.dart';
-import 'endpoints/endpoint.dart';
-import 'endpoints/selector.dart';
 import 'exceptions/protocol.dart';
+import 'operations/operation.dart';
+import 'operations/selector.dart';
 
 ///
 class HlamTamApiImpl implements HlamTamApi {
@@ -14,8 +14,8 @@ class HlamTamApiImpl implements HlamTamApi {
   HlamTamApiImpl({
     required this.client,
     required this.version,
-    required EndpointSelector endpointSelector,
-  }) : _endpointSelector = endpointSelector;
+    required HlamTamOperationSelector operationSelector,
+  }) : _operationSelector = operationSelector;
 
   ///
   final HlamTamClient client;
@@ -24,39 +24,41 @@ class HlamTamApiImpl implements HlamTamApi {
   final int version;
 
   ///
-  final EndpointSelector _endpointSelector;
+  final HlamTamOperationSelector _operationSelector;
 
   ///
   @override
-  Future<R> send<R extends HlamTamResponse>(Endpoint<R> endpoint) async {
-    if (!endpoint.supports(version)) {
+  Future<R> send<R extends HlamTamResponse>(
+    HlamTamOperation<R> operation,
+  ) async {
+    if (!operation.supports(version)) {
       log.w(
         () =>
-            'Endpoint ${endpoint.runtimeType} is not supported by protocol v$version',
+            'Operation ${operation.runtimeType} is not supported by protocol v$version',
       );
       throw StateError(
-        'Endpoint ${endpoint.runtimeType} does not support the protocol v$version',
+        'Operation ${operation.runtimeType} does not support the protocol v$version',
       );
     }
 
     log.d(
       () =>
-          'Sending ${endpoint.runtimeType} v$version opcode=${endpoint.opcode}',
+          'Sending ${operation.runtimeType} v$version opcode=${operation.opcode}',
     );
     final stopwatch = Stopwatch()..start();
 
     final packet = await client.send(
       HlamTamCommand.request,
-      endpoint.opcode,
-      endpoint.toPayload(),
+      operation.opcode,
+      operation.toPayload(),
     );
     final data = packet.data;
 
     if (data['error'] != null) {
       log.w(
         () =>
-            'Protocol error for ${endpoint.runtimeType}: '
-            'opcode=${endpoint.opcode} seq=${packet.sequence} '
+            'Protocol error for ${operation.runtimeType}: '
+            'opcode=${operation.opcode} seq=${packet.sequence} '
             'code=${data['error']} message=${data['message']}',
       );
       throw ProtocolError(
@@ -67,13 +69,13 @@ class HlamTamApiImpl implements HlamTamApi {
     }
 
     try {
-      final result = endpoint.fromPayload(data);
+      final result = operation.fromPayload(data);
 
       stopwatch.stop();
 
       log.i(
         () =>
-            'OK ${endpoint.runtimeType} v$version opcode=${endpoint.opcode} '
+            'OK ${operation.runtimeType} v$version opcode=${operation.opcode} '
             'seq=${packet.sequence} in=${stopwatch.elapsedMilliseconds}ms',
       );
 
@@ -83,12 +85,12 @@ class HlamTamApiImpl implements HlamTamApi {
 
       log.e(
         () =>
-            'Response parse failed for ${endpoint.runtimeType} v$version opcode=${endpoint.opcode} '
+            'Response parse failed for ${operation.runtimeType} v$version opcode=${operation.opcode} '
             'seq=${packet.sequence} in=${stopwatch.elapsedMilliseconds}ms',
         error: e,
       );
       throw StateError(
-        'Parse failed for ${endpoint.runtimeType} v$version, opcode ${endpoint.opcode}: $e',
+        'Parse failed for ${operation.runtimeType} v$version, opcode ${operation.opcode}: $e',
       );
     }
   }
@@ -96,9 +98,9 @@ class HlamTamApiImpl implements HlamTamApi {
   @override
   Future<R> sendVersioned<R extends HlamTamResponse>(
     int version,
-    List<EndpointFactory<R>> candidates,
+    List<HlamTamOperationFactory<R>> candidates,
   ) {
-    final endpoint = _endpointSelector.pick(version, candidates);
-    return send(endpoint);
+    final operation = _operationSelector.pick(version, candidates);
+    return send(operation);
   }
 }

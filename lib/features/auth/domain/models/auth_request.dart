@@ -1,26 +1,16 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'auth_request.freezed.dart';
+
 ///
-class AuthRequestModel {
+@freezed
+abstract class AuthRequestModel with _$AuthRequestModel {
   ///
-  const AuthRequestModel({
-    required this.token,
-    required this.codeLength,
-    required this.requestMaxDuration,
-    required this.requestCountLeft,
-    required this.altActionDuration,
-  });
-
-  ///
-  final String token;
-
-  ///
-  final int codeLength;
-
-  ///
-  final Duration requestMaxDuration;
-
-  ///
-  final int requestCountLeft;
-
-  ///
-  final Duration altActionDuration;
+  const factory AuthRequestModel({
+    required String token,
+    required int codeLength,
+    required Duration requestMaxDuration,
+    required int requestCountLeft,
+    required Duration altActionDuration,
+  }) = _AuthRequestModel;
 }

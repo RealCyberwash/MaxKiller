@@ -123,3 +123,7 @@ app.*.symbols
 max_killer.iml
 
 .cmake-release
+
+*.freezed.dart
+*.g.dart
+*.mapper.dart

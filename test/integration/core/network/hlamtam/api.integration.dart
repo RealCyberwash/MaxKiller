@@ -9,7 +9,7 @@ import 'package:max_killer/shared/core/network/hlamtam/api.dart';
 import 'package:max_killer/shared/core/network/hlamtam/api_impl.dart';
 import 'package:max_killer/shared/core/network/hlamtam/client.dart';
 import 'package:max_killer/shared/core/network/hlamtam/constants.dart';
-import 'package:max_killer/shared/core/network/hlamtam/endpoints/selector_impl.dart';
+import 'package:max_killer/shared/core/network/hlamtam/operations/selector_impl.dart';
 
 import '../../../../helpers/data_generators.dart';
 
@@ -27,7 +27,7 @@ void main() {
       api = HlamTamApiImpl(
         client: client,
         version: HlamTamTcp.protocolVersion,
-        endpointSelector: EndpointSelectorImpl(),
+        operationSelector: HlamTamOperationSelectorImpl(),
       );
       auth = AuthRepositoryImpl(api: api, version: HlamTamTcp.protocolVersion);
     });

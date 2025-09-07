@@ -1,9 +1,9 @@
 import 'package:max_killer/features/auth/domain/auth_repository.dart';
 import 'package:max_killer/features/auth/domain/models/auth_request.dart';
 import 'package:max_killer/shared/core/network/hlamtam/api.dart';
-import 'package:max_killer/shared/core/network/hlamtam/endpoints/auth/auth_request/endpoint.rev1.dart';
-import 'package:max_killer/shared/core/network/hlamtam/endpoints/auth/auth_request/response.rev1.dart';
-import 'package:max_killer/shared/core/network/hlamtam/endpoints/auth/auth_request/types.dart';
+import 'package:max_killer/shared/core/network/hlamtam/operations/auth/auth_request/operation.rev1.dart';
+import 'package:max_killer/shared/core/network/hlamtam/operations/auth/auth_request/response.rev1.dart';
+import 'package:max_killer/shared/core/network/hlamtam/operations/auth/auth_request/types.dart';
 import 'package:max_killer/shared/core/network/hlamtam/response.dart';
 
 ///
@@ -19,7 +19,10 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<AuthRequestModel> startAuth({required String phone}) async {
     final result = await _api.sendVersioned(_version, [
-      () => AuthRequestRev1(phone: phone, type: AuthRequestType.startAuth),
+      () => AuthRequestOperationRev1(
+        phone: phone,
+        type: AuthRequestType.startAuth,
+      ),
     ]);
 
     return _mapAuthResponse(result);
@@ -28,7 +31,8 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<AuthRequestModel> resend({required String phone}) async {
     final result = await _api.sendVersioned(_version, [
-      () => AuthRequestRev1(phone: phone, type: AuthRequestType.resend),
+      () =>
+          AuthRequestOperationRev1(phone: phone, type: AuthRequestType.resend),
     ]);
 
     return _mapAuthResponse(result);

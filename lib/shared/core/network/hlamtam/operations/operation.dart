@@ -2,10 +2,11 @@ import 'package:max_killer/shared/core/network/hlamtam/constants.dart';
 import 'package:max_killer/shared/core/network/hlamtam/response.dart';
 
 ///
-typedef EndpointFactory<R extends HlamTamResponse> = Endpoint<R> Function();
+typedef HlamTamOperationFactory<R extends HlamTamResponse> =
+    HlamTamOperation<R> Function();
 
 ///
-abstract interface class Endpoint<R extends HlamTamResponse> {
+abstract interface class HlamTamOperation<R extends HlamTamResponse> {
   ///
   HlamTamOpcode get opcode;
 

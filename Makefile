@@ -1,4 +1,4 @@
-.PHONY: setup native native-universal clean test
+.PHONY: setup native native-universal clean test gen watch
 
 NATIVE_DIR := $(abspath build/native)
 BUILD_TYPE ?= Release
@@ -7,6 +7,7 @@ UNIVERSAL ?= OFF
 setup:
 	git submodule update --init --recursive
 	@dart pub get
+	$(MAKE) gen
 	$(MAKE) native
 
 native:
@@ -22,3 +23,11 @@ clean:
 test: native
 	@dart pub get
 	@dart test
+
+gen:
+	flutter pub get
+	flutter pub run build_runner build -d
+
+watch:
+	flutter pub get
+	flutter pub run build_runner watch -d

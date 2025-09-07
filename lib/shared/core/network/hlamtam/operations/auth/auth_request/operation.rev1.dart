@@ -1,12 +1,13 @@
 import 'package:max_killer/shared/core/network/hlamtam/constants.dart';
-import 'package:max_killer/shared/core/network/hlamtam/endpoints/auth/auth_request/response.rev1.dart';
-import 'package:max_killer/shared/core/network/hlamtam/endpoints/auth/auth_request/types.dart';
-import 'package:max_killer/shared/core/network/hlamtam/endpoints/endpoint.dart';
+import 'package:max_killer/shared/core/network/hlamtam/operations/auth/auth_request/response.rev1.dart';
+import 'package:max_killer/shared/core/network/hlamtam/operations/auth/auth_request/types.dart';
+import 'package:max_killer/shared/core/network/hlamtam/operations/operation.dart';
 
 ///
-class AuthRequestRev1 implements Endpoint<AuthRequestResponseRev1> {
+class AuthRequestOperationRev1
+    implements HlamTamOperation<AuthRequestResponseRev1> {
   ///
-  const AuthRequestRev1({required this.phone, required this.type});
+  const AuthRequestOperationRev1({required this.phone, required this.type});
 
   ///
   final String phone;
