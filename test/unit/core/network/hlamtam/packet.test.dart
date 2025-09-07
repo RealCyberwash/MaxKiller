@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:max_killer/core/network/hlamtam/constants.dart';
-import 'package:max_killer/core/network/hlamtam/packet.dart';
+import 'package:max_killer/shared/core/network/hlamtam/constants.dart';
+import 'package:max_killer/shared/core/network/hlamtam/packet.dart';
 
 void main() {
   test('decode START_AUTH packet', () {

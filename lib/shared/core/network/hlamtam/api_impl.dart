@@ -1,18 +1,21 @@
-import 'package:max_killer/core/log.dart';
-import 'package:max_killer/core/network/hlamtam/abstraction/response.dart';
-import 'package:max_killer/core/network/hlamtam/services/auth/service.dart';
+import 'package:max_killer/shared/core/log.dart';
+import 'package:max_killer/shared/core/network/hlamtam/response.dart';
 
+import 'api.dart';
 import 'client.dart';
 import 'constants.dart';
 import 'endpoints/endpoint.dart';
+import 'endpoints/selector.dart';
 import 'exceptions/protocol.dart';
 
 ///
-class HlamTamApi {
+class HlamTamApiImpl implements HlamTamApi {
   ///
-  HlamTamApi({required this.client, required this.version}) {
-    auth = AuthServiceImpl(api: this, version: version);
-  }
+  HlamTamApiImpl({
+    required this.client,
+    required this.version,
+    required EndpointSelector endpointSelector,
+  }) : _endpointSelector = endpointSelector;
 
   ///
   final HlamTamClient client;
@@ -21,10 +24,11 @@ class HlamTamApi {
   final int version;
 
   ///
-  late AuthService auth;
+  final EndpointSelector _endpointSelector;
 
   ///
-  Future<R> send<R extends Response>(Endpoint<R> endpoint) async {
+  @override
+  Future<R> send<R extends HlamTamResponse>(Endpoint<R> endpoint) async {
     if (!endpoint.supports(version)) {
       log.w(
         () =>
@@ -87,5 +91,14 @@ class HlamTamApi {
         'Parse failed for ${endpoint.runtimeType} v$version, opcode ${endpoint.opcode}: $e',
       );
     }
+  }
+
+  @override
+  Future<R> sendVersioned<R extends HlamTamResponse>(
+    int version,
+    List<EndpointFactory<R>> candidates,
+  ) {
+    final endpoint = _endpointSelector.pick(version, candidates);
+    return send(endpoint);
   }
 }

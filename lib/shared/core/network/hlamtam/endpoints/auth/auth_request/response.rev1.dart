@@ -1,7 +1,7 @@
-import 'package:max_killer/core/network/hlamtam/abstraction/response.dart';
+import 'package:max_killer/shared/core/network/hlamtam/response.dart';
 
 ///
-class AuthRequestResponseRev1 implements Response {
+class AuthRequestResponseRev1 implements HlamTamResponse {
   ///
   const AuthRequestResponseRev1({
     required this.token,

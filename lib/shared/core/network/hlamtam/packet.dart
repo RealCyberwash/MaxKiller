@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:max_killer/core/ffi/lz4.dart';
+import 'package:max_killer/shared/core/ffi/lz4.dart';
 import 'package:pro_mpack/pro_mpack.dart';
 
 import 'constants.dart';

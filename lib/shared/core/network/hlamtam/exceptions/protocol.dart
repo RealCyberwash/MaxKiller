@@ -1,4 +1,4 @@
-import 'package:max_killer/core/network/hlamtam/packet.dart';
+import 'package:max_killer/shared/core/network/hlamtam/packet.dart';
 
 import 'base.dart';
 

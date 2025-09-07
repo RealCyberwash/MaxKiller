@@ -3,8 +3,8 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:injectable/injectable.dart';
-import 'package:max_killer/core/log.dart';
-import 'package:max_killer/core/network/hlamtam/handlers/handler.dart';
+import 'package:max_killer/shared/core/log.dart';
+import 'package:max_killer/shared/core/network/hlamtam/handlers/handler.dart';
 
 import 'constants.dart';
 import 'exceptions/api.dart';
