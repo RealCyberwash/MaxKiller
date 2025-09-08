@@ -23,7 +23,7 @@ class AuthRequestOperationRev1
 
   @override
   AuthRequestResponseRev1 fromPayload(Map<String, dynamic> map) =>
-      AuthRequestResponseRev1.fromMap(map);
+      AuthRequestResponseRev1.fromJson(map);
 
   @override
   bool supports(int protocolVersion) => protocolVersion >= 10;

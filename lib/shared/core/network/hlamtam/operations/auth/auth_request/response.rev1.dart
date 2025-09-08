@@ -20,6 +20,6 @@ abstract class AuthRequestResponseRev1
   }) = _AuthRequestResponseRev1;
 
   ///
-  factory AuthRequestResponseRev1.fromMap(Map<String, dynamic> map) =>
-      _$AuthRequestResponseRev1FromJson(map);
+  factory AuthRequestResponseRev1.fromJson(Map<String, dynamic> json) =>
+      _$AuthRequestResponseRev1FromJson(json);
 }
